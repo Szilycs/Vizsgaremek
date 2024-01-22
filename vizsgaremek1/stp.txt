@@ -1,0 +1,64 @@
+A következő lépéseket követném az STP konfigurálásához az adott hálózatban:
+
+A gyökérhíd kiválasztásához meg kell határozni az egyes kapcsolók portköltségét. Alapértelmezés szerint a kapcsolóportok költsége az Ethernet sebességüktől függ. A hálózatban szereplő kapcsolók portköltsége a következő:
+Switch 1: fa0/1: 100 Mbps (19)
+Switch 1: fa0/2: 100 Mbps (19)
+Switch 2: fa0/1: 100 Mbps (19)
+Switch 2: fa0/2: 100 Mbps (19)
+Switch 3: fa0/1: 100 Mbps (19)
+Switch 3: fa0/2: 100 Mbps (19)
+Switch 4: fa0/1: 100 Mbps (19)
+Switch 4: fa0/2: 100 Mbps (19)
+Switch 5: fa0/1: 100 Mbps (19)
+Switch 5: fa0/2: 100 Mbps (19)
+A fenti költségek alapján a gyökérhíd a Switch 1 lesz, mivel a legkisebb portköltséggel rendelkezik.
+
+A gyökérhíd kiválasztása után a többi kapcsolónak meg kell határoznia a gyökérhídig vezető útvonal költségét. Ezt a következő képlettel lehet kiszámítani:
+Útvonal költség = Portköltség * Portok száma
+Például a Switch 2 gyökérhídig vezető útvonal költsége a következőképpen számítható ki:
+
+Útvonal költség = 19 * 2 = 38
+Miután minden kapcsoló meghatározta a gyökérhídig vezető útvonal költségét, a következő lépés az, hogy a kapcsolók portjait a megfelelő szerepre állítsuk be.
+A gyökérhíd összes portja aktív lesz.
+A gyökérhídig vezető összes útvonalon lévő port aktív lesz.
+A gyökérhídtól eltérő útvonalon lévő portok zárva lesznek.
+A fenti hálózatban a következő portbeállítások szükségesek:
+
+Switch 1:
+  fa0/1: aktív
+  fa0/2: aktív
+
+Switch 2:
+  fa0/1: aktív
+  fa0/2: aktív
+
+Switch 3:
+  fa0/1: aktív
+  fa0/2: zárva
+
+Switch 4:
+  fa0/1: aktív
+  fa0/2: zárva
+
+Switch 5:
+  fa0/1: aktív
+  fa0/2: zárva
+A végső lépés az STP-konfiguráció ellenőrzése. Ezt a következő parancsok segítségével lehet megtenni:
+show spanning-tree
+Ez a parancs kilistázza az STP állapotát az összes kapcsolón.
+
+A fenti konfiguráció biztosítja, hogy a hálózatban egyetlen feszítőfa legyen, és hogy a forgalom átjusson a gyökérhídig.
+
+További konfigurációs lehetőségek:
+
+A gyökérhíd automatikus kiválasztásának letiltása:
+spanning-tree mode manual
+A gyökérhíd kiválasztásának manuális meghatározása:
+spanning-tree root primary <kapcsoló-azonosító>
+A port költségének megváltoztatása:
+spanning-tree cost <érték>
+A port szerepének megváltoztatása:
+spanning-tree port type <típus>
+Az STP működési módjának megváltoztatása:
+spanning-tree mode <mód>
+A konkrét konfigurációs lehetőségek a hálózat igényeitől függenek.
